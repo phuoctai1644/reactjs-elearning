@@ -1,21 +1,22 @@
-import { LOGIN_FAILURE, LOGIN_SUCCESS, REGISTER_FAILURE, REGISTER_SUCCESS, SET_CURRENT_AUTHEN_PAGE } from "./type"
+import { LOGIN_FAILURE, LOGIN_SUCCESS, LOG_OUT, REGISTER_FAILURE, REGISTER_SUCCESS, SET_CURRENT_AUTHEN_PAGE } from "./type"
 
 const userInfo = JSON.parse(localStorage.getItem('userInfo')) ?? {}
 
 const initState = {
     isRegistering: window.location.pathname === '/register' ? true : false,
-    registerSuccess: true,
+    registerSuccess: false,
+    loginSuccess: Object.keys(userInfo).length === 0 ? false : true,
     userInfo: userInfo,
 }
 
 const AuthenReducer = (state = initState, action) => {
     switch (action.type) {
         case REGISTER_SUCCESS:
-            break
+            return state
 
         case REGISTER_FAILURE:
             localStorage.setItem('registerErr', JSON.stringify(action.payload))
-            break
+            return state
             
         case LOGIN_SUCCESS:
             localStorage.setItem('userInfo', JSON.stringify(action.payload))
@@ -23,10 +24,14 @@ const AuthenReducer = (state = initState, action) => {
             return {
                 ...state, 
                 userInfo: action.payload,
+                loginSuccess: true
             }
 
         case LOGIN_FAILURE:
-            break;
+            return {
+                ...state, 
+                loginSuccess: false
+            }
         
         case SET_CURRENT_AUTHEN_PAGE:
             localStorage.removeItem('registerErr')
@@ -34,6 +39,14 @@ const AuthenReducer = (state = initState, action) => {
             return {
                 ...state,
                 isRegistering: !state.isRegistering,
+            }
+        
+        case LOG_OUT:
+            return {
+                isRegistering: false,
+                registerSuccess: false,
+                loginSuccess: false,
+                userInfo: {}
             }
         
         default:

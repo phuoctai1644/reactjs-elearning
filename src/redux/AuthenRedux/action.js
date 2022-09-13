@@ -1,5 +1,5 @@
 import axios from '../../api/axios'
-import { LOGIN_FAILURE, LOGIN_SUCCESS, REGISTER_FAILURE, REGISTER_SUCCESS, SET_CURRENT_AUTHEN_PAGE } from "./type"
+import { LOGIN_FAILURE, LOGIN_SUCCESS, LOG_OUT, REGISTER_FAILURE, REGISTER_SUCCESS, SET_CURRENT_AUTHEN_PAGE } from "./type"
 
 const LOGIN_URL = '/auth/login'
 const REGISTER_URL = '/auth/signup'
@@ -65,5 +65,13 @@ export const login = payload => {
 export const setCurrentAuthenPage = () => {
     return {
         type: SET_CURRENT_AUTHEN_PAGE
+    }
+}
+
+export const logOut = () => {
+    localStorage.removeItem('userInfo')
+
+    return {
+        type: LOG_OUT
     }
 }

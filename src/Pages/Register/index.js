@@ -1,13 +1,17 @@
 import { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 import className from 'classnames/bind'
 import { register } from '../../redux/AuthenRedux/action'
 import styles from './Register.module.scss'
+import Button from '../../Components/Button'
 
 const cx = className.bind(styles)
 
 function Register() {
+    const navigate = useNavigate()
     const dispatch = useDispatch()
+    const authenStore = useSelector(state => state.authen)
     const [errMsg, setErrMsg] = useState({})
     const [userInfo, setUserInfo] = useState({
         name: '',
@@ -22,7 +26,7 @@ function Register() {
         setErrMsg({...errMsg, [targetAttr]: ''})
     }
 
-    const handleSubmitForm = (e) => {
+    const handleSubmitForm = e => {
         e.preventDefault()
 
         Promise.all([dispatch(register(userInfo)), async function() {}])
@@ -30,20 +34,28 @@ function Register() {
                 setTimeout(() => {
                     const failureObj = JSON.parse(localStorage.getItem('registerErr'))
 
-                    if (Object.keys(failureObj).length !== 0) {
-                        setErrMsg({
-                            name: failureObj?.name && failureObj.name[0],
-                            email: failureObj?.email &&  failureObj.email[0],
-                            password: failureObj?.password &&  failureObj.password[0],
-                            confirmPassword: failureObj?.confirmPassword &&  failureObj.confirmPassword[0]
-                        })
-                    }
+                    // if (Object.keys(failureObj).length !== 0) {
+                    //     setErrMsg({
+                    //         name: failureObj?.name && failureObj.name[0],
+                    //         email: failureObj?.email && failureObj.email[0],
+                    //         password: failureObj?.password &&  failureObj.password[0],
+                    //         confirmPassword: failureObj?.confirmPassword &&  failureObj.confirmPassword[0]
+                    //     })
+                    // }
+
+                    
                 }, 1000)
             })
+
+
     }
 
     useEffect(() => {
         document.title = 'Register'
+
+        if (authenStore.registerSuccess) {
+            navigate('/')
+        }
     }, [])
 
     return (
@@ -127,7 +139,7 @@ function Register() {
                     </div>
 
                     <div className={cx('btn-wrap')}>
-                        <button type='submit' className={cx('submit')}>Register</button>
+                        <Button primary rounded>Register</Button>
                     </div>
                 </form>
             </div>

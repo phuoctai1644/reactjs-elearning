@@ -1,13 +1,17 @@
 import { useEffect, useState } from 'react' 
+import { useNavigate } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
 import className from 'classnames/bind'
-import { useDispatch } from 'react-redux'
-import styles from './Login.module.scss'
 import { login } from '../../redux/AuthenRedux/action'
+import Button from '../../Components/Button'
+import styles from './Login.module.scss'
 
 const cx = className.bind(styles)
 
 function Login() {
     const dispatch = useDispatch()
+    const navigate = useNavigate()
+    const authenStore = useSelector(state => state.authen)
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [errMsg, setErrMsg] = useState('')
@@ -44,6 +48,10 @@ function Login() {
 
     useEffect(() => {
         document.title = 'Login'
+
+        if (authenStore.loginSuccess) {
+            navigate('/home')
+        }
     }, [])
 
     return (
@@ -55,7 +63,7 @@ function Login() {
                     <div className={cx('form-group')}>
                         <label htmlFor="email">Email</label>
                         <input 
-                            type="text" 
+                            type="email" 
                             name='email'
                             placeholder='Enter your email'
                             required
@@ -78,7 +86,7 @@ function Login() {
 
                     <div className={cx('form-group')}>
                         <a href="/">Forgot password</a>
-                        <button type="submit" className={cx('submit')}>Login</button>
+                        <Button rounded primary>Login</Button>
                     </div>
                 </form>
             </div>
