@@ -1,7 +1,7 @@
 import { CREATE_COURSE_SUCCESS, GET_COURSES_SUCCESS } from "./type"
 
 const initState = {
-    userCourses: []
+    userCourses: JSON.parse(localStorage.getItem('userCourses')) ?? []
 }
 
 const CourseReducer = (state = initState, action) => {

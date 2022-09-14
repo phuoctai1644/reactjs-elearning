@@ -21,6 +21,7 @@ const getUserCourses = async () => {
     return res.data.data.map(course => (
         <CourseItem 
             key={course._id}
+            id={course._id}
             courseName={course.name} 
             courseAuthor="Phuoc Tai"
         />

@@ -13,7 +13,8 @@ function CourseItem(props) {
                 <p>by {props.courseAuthor}</p>
             </div>
             {/* <button>View course</button> */}
-            <Button outline>View course</Button>
+            {/* <Button outline >View course</Button> */}
+            <Button to={`/course-detail/${props.id}`} outline>View course</Button>
         </div>
     )
 }

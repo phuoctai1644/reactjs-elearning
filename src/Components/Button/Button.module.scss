@@ -26,7 +26,7 @@
 
     &:hover {
         background-color: var(--hover-primary-color);
-    }
+    }   
 }
 
 .outline {
@@ -35,6 +35,7 @@
 
     &:hover {
         background-color: #effff9;
+        color: inherit;
     }
 }
 

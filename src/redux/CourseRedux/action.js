@@ -36,6 +36,7 @@ export const getAllCourses = () => {
         })
             .then(res => {
                 const userCourses = res.data.data
+                localStorage.setItem('userCourses', JSON.stringify(userCourses))
 
                 dispatch(getCoursesSuccess(userCourses))
             })
