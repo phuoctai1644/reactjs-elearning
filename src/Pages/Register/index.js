@@ -20,6 +20,7 @@ function Register() {
         confirmPassword: '',
         role: 'student'
     })
+    const [registerBtn, setRegisterBtn] = useState('Register')
 
     const handleChangeUserInfo = (e, targetAttr) => {
         setUserInfo({...userInfo, [targetAttr]: e.target.value})
@@ -28,22 +29,22 @@ function Register() {
 
     const handleSubmitForm = e => {
         e.preventDefault()
+        setRegisterBtn('Waiting...')
 
         Promise.all([dispatch(register(userInfo)), async function() {}])
             .then(() => {
                 setTimeout(() => {
-                    const failureObj = JSON.parse(localStorage.getItem('registerErr'))
+                    const failureObj = JSON.parse(localStorage.getItem('errMsg'))
 
-                    // if (Object.keys(failureObj).length !== 0) {
-                    //     setErrMsg({
-                    //         name: failureObj?.name && failureObj.name[0],
-                    //         email: failureObj?.email && failureObj.email[0],
-                    //         password: failureObj?.password &&  failureObj.password[0],
-                    //         confirmPassword: failureObj?.confirmPassword &&  failureObj.confirmPassword[0]
-                    //     })
-                    // }
-
-                    
+                    if (Object.keys(failureObj).length !== 0) {
+                        setErrMsg({
+                            name: failureObj?.name && failureObj.name[0],
+                            email: failureObj?.email && failureObj.email[0],
+                            password: failureObj?.password &&  failureObj.password[0],
+                            confirmPassword: failureObj?.confirmPassword &&  failureObj.confirmPassword[0]
+                        })
+                        setRegisterBtn('Register')
+                    }
                 }, 1000)
             })
 
@@ -139,7 +140,7 @@ function Register() {
                     </div>
 
                     <div className={cx('btn-wrap')}>
-                        <Button primary rounded>Register</Button>
+                        <Button primary rounded>{registerBtn}</Button>
                     </div>
                 </form>
             </div>

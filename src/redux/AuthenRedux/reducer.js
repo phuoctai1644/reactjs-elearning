@@ -1,4 +1,4 @@
-import { LOGIN_FAILURE, LOGIN_SUCCESS, LOG_OUT, REGISTER_FAILURE, REGISTER_SUCCESS, SET_CURRENT_AUTHEN_PAGE } from "./type"
+import { LOGIN_FAILURE, LOGIN_SUCCESS, LOG_OUT, REGISTER_FAILURE, REGISTER_SUCCESS, RESET_PASSWORD_FAILURE, SET_CURRENT_AUTHEN_PAGE } from "./type"
 
 const userInfo = JSON.parse(localStorage.getItem('userInfo')) ?? {}
 
@@ -12,10 +12,11 @@ const initState = {
 const AuthenReducer = (state = initState, action) => {
     switch (action.type) {
         case REGISTER_SUCCESS:
+            localStorage.removeItem('errMsg')
             return state
 
         case REGISTER_FAILURE:
-            localStorage.setItem('registerErr', JSON.stringify(action.payload))
+            localStorage.setItem('errMsg', JSON.stringify(action.payload))
             return state
             
         case LOGIN_SUCCESS:
@@ -34,7 +35,7 @@ const AuthenReducer = (state = initState, action) => {
             }
         
         case SET_CURRENT_AUTHEN_PAGE:
-            localStorage.removeItem('registerErr')
+            localStorage.removeItem('errMsg')
 
             return {
                 ...state,
@@ -48,6 +49,11 @@ const AuthenReducer = (state = initState, action) => {
                 loginSuccess: false,
                 userInfo: {}
             }
+
+        case RESET_PASSWORD_FAILURE:
+            localStorage.setItem('errMsg', JSON.stringify(action.payload))
+
+            return state
         
         default:
             return state

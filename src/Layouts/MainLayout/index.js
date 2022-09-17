@@ -9,7 +9,6 @@ import styles from './MainLayout.module.scss'
 const cx = classNames.bind(styles)
 
 function MainLayout({children}) {
-    console.log('Mainlayout re-render')
     return (
         <div className={cx('container')}>
             <SideBar />

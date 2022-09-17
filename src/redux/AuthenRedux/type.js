@@ -7,3 +7,5 @@ export const LOGIN_FAILURE = 'login_failure'
 export const SET_CURRENT_AUTHEN_PAGE = 'set_current_authen_page'
 
 export const LOG_OUT = 'log_out'
+
+export const RESET_PASSWORD_FAILURE = 'reset_password_failure'

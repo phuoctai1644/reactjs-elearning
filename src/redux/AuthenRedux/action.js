@@ -1,8 +1,9 @@
 import axios from '../../api/axios'
-import { LOGIN_FAILURE, LOGIN_SUCCESS, LOG_OUT, REGISTER_FAILURE, REGISTER_SUCCESS, SET_CURRENT_AUTHEN_PAGE } from "./type"
+import { LOGIN_FAILURE, LOGIN_SUCCESS, LOG_OUT, REGISTER_FAILURE, REGISTER_SUCCESS, RESET_PASSWORD_FAILURE, SET_CURRENT_AUTHEN_PAGE } from "./type"
 
 const LOGIN_URL = '/auth/login'
 const REGISTER_URL = '/auth/signup'
+const RESET_PASSWORD_URL = '/auth/resetPassword'
 
 export const register = payload => {
     return dispatch => {
@@ -12,7 +13,7 @@ export const register = payload => {
                 console.log("Register Successfully!!!")
             })
             .catch(err => {
-                const errMsg = {...err.response.data.errors.validationError}
+                const errMsg = {...err.response.data.error.errors.validationError}
                 
                 dispatch(registerFailure(errMsg))
                 console.log('Register failure!!!')
@@ -48,13 +49,6 @@ export const login = payload => {
             })
     }
 
-    function loginSuccess(payload) {
-        return {
-            type: LOGIN_SUCCESS,
-            payload
-        }
-    }
-
     function loginFailure() {
         return {
             type: LOGIN_FAILURE,
@@ -73,5 +67,37 @@ export const logOut = () => {
 
     return {
         type: LOG_OUT
+    }
+}
+
+export const resetPassword = (resetToken, payload) => {
+    return dispatch => {
+        axios.post(`${RESET_PASSWORD_URL}/${resetToken}`, payload)
+            .then(res => {
+                const newUserInfo = res.data
+
+                dispatch(loginSuccess(newUserInfo))
+                console.log('Reset password successfully!!!')
+            })
+            .catch(err => {
+                const errMsg = err.response.data.error.errors.validationError
+                dispatch(resetFailure(errMsg))
+                console.log('Reset password failure!!!')
+            })
+    }
+
+    function resetFailure(payload) {
+        return {
+            type: RESET_PASSWORD_FAILURE,
+            payload
+        }
+    }
+}
+
+/** Global **/
+const loginSuccess = payload => {
+    return {
+        type: LOGIN_SUCCESS,
+        payload
     }
 }
