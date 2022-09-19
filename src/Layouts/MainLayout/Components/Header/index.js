@@ -8,14 +8,14 @@ function Header() {
         <div className={cx('wrapper')}>
             <div className={cx('search')}>
                 <input type="text" />
-                <i class="bi bi-search"></i>
+                <i className="bi bi-search"></i>
             </div>
             <div className={cx('action')}>
-                <i class="bi bi-bell"></i>
+                <i className="bi bi-bell"></i>
                 <div className={cx('user-option')}>
                     {/* <Avatar small text="T" /> */}
                     <img src="" alt="User Avatar" />
-                    <i class="bi bi-caret-down-fill"></i>
+                    <i className="bi bi-caret-down-fill"></i>
                 </div>
             </div>
         </div>

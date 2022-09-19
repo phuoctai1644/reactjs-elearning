@@ -34,7 +34,7 @@ function Register() {
         Promise.all([dispatch(register(userInfo)), async function() {}])
             .then(() => {
                 setTimeout(() => {
-                    const failureObj = JSON.parse(localStorage.getItem('errMsg'))
+                    const failureObj = JSON.parse(localStorage.getItem('errMsg')) ?? {}
 
                     if (Object.keys(failureObj).length !== 0) {
                         setErrMsg({
