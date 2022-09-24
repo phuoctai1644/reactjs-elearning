@@ -13,12 +13,12 @@ function MainLayout({children}) {
         <div className={cx('container')}>
             <SideBar />
             <div className={cx('content')}>
-                <Status />
+                {/* <Status /> */}
                 { children }
             </div>
             <div className={cx('right-sidebar')}>
                 <Header />
-                <div>\
+                <div>
                     {/* <Deadline /> */}
                     {/* <Timeline /> */}
                 </div>

@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import classNames from "classnames/bind"
-import {getAllCourses as saveUserCourses} from '../../redux/CourseRedux/action'
+import { getAllCourses as saveUserCourses } from '../../redux/CourseRedux/action'
 import Button from "../../Components/Button"
 import CourseItem from "../../Components/CourseItem"
+import Error from "../Error"
 import axios from '../../api/axios'
 import styles from './Home.module.scss'
 
@@ -14,7 +15,7 @@ const GET_COURSES_URL = '/courses'
 const getUserCourses = async () => {
     const userToken = JSON.parse(localStorage.getItem('userInfo'))?.token
 
-    const res = await axios(GET_COURSES_URL, {
+    const res = await axios.get(GET_COURSES_URL, {
         headers: { Authorization: `Bearer ${userToken}` }
     })
 
@@ -31,7 +32,6 @@ const getUserCourses = async () => {
 function Home() {
     const dispatch = useDispatch()
     const userInfo = useSelector(state => state.authen.userInfo)
-    const userRole = userInfo.data.user.role
     const [apiResponse, setApiResponse] = useState('*** Courses is now loading ***')
 
     useEffect(() => {
@@ -41,23 +41,28 @@ function Home() {
             .then(result => setApiResponse(result))
     }, [])
 
-    return (
-        <div className={cx('wrapper')}>
-            <div className={cx('header')}>
-                <h2>Courses</h2>
-                <Button 
-                    to={userRole === 'student' ? '/participate' : '/create-course'}
-                    primary 
-                    leftIcon={<i className="bi bi-plus-circle"></i>}
-                >
-                    {userRole === 'student' ? 'Participate' : 'Create'}
-                </Button>
+    if (!localStorage.getItem('userInfo')) return <Error />
+    else {
+        const userRole = userInfo.data.user.role
+        return (
+            <div className={cx('wrapper')}>
+                <div className={cx('header')}>
+                    <h2>Courses</h2>
+                    <Button 
+                        to={userRole === 'student' ? '/participate' : '/create-course'}
+                        primary 
+                        leftIcon={<i className="bi bi-plus-circle"></i>}
+                    >
+                        {userRole === 'student' ? 'Participate' : 'Create'}
+                    </Button>
+                </div>
+                <div className={cx('course-list')}>
+                    {apiResponse}
+                </div>
             </div>
-            <div className={cx('course-list')}>
-                {apiResponse}
-            </div>
-        </div>
-    )
+        )
+    }
+        
 }
 
 export default Home

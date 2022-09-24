@@ -1,7 +1,7 @@
 .wrapper {
     position: relative;
     left: calc(var(--sidebar-width) + 36px);
-    top: calc(var(--status-height) + 48px);
+    // top: calc(var(--status-height) + 48px);
     width: calc(0.5*100vw);
     margin-top: 12px;
 }
